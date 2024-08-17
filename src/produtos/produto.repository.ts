@@ -14,4 +14,12 @@ export class ProdutoRepository{
         console.log(this.produtos);
         return this.produtos;
     }
+
+    async existeProdutoComNome(nome: string){
+        const possivelProduto = this.produtos.find(
+            produto => produto.nome === nome
+        );
+
+        return possivelProduto !== undefined;
+    }
 }

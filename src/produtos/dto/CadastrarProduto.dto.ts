@@ -1,8 +1,10 @@
 import { IsNotEmpty } from "class-validator";
+import { ProdutoJaCadastrado } from "../validacao/produto-ja-cadastrado.validator";
 
 
 export class CadastrarProdutoDTO{
     @IsNotEmpty({message: "O campo nome é obrigatório"})
+    @ProdutoJaCadastrado({message: "Produto já cadastrado"})
     nome: string;
 
     @IsNotEmpty({message: "O campo categoria é obrigatório"})
