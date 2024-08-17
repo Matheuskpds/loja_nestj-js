@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { ProdutoEntity } from "./produto.entity";
+import { AtualizaProdutoDTO } from "./dto/AtualizaProduto.dto";
 
 @Injectable()
 export class ProdutoRepository{
@@ -8,6 +9,18 @@ export class ProdutoRepository{
 
     async salvar(produto: ProdutoEntity){
         this.produtos.push(produto);
+    }
+
+    async buscarPorProduto(nome: string){
+        const possivelProduto = this.produtos.find(
+            produto => produto.nome === nome
+        );
+
+        if(!possivelProduto){
+            throw new Error("Produto não encontrado");
+        }
+
+        return possivelProduto;
     }
 
     async listar(){
@@ -21,5 +34,16 @@ export class ProdutoRepository{
         );
 
         return possivelProduto !== undefined;
+    }
+
+    async atualizarProduto(nome: string, novosDados: Partial<ProdutoEntity>){
+        const produtoAtualizado = await this.buscarPorProduto(nome);
+
+        Object.entries(novosDados).forEach(([chave, valor]) => {
+            produtoAtualizado[chave] = valor;
+
+        });
+
+        return produtoAtualizado;
     }
 }
