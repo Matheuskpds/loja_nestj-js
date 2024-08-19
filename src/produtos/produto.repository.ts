@@ -36,14 +36,24 @@ export class ProdutoRepository{
         return possivelProduto !== undefined;
     }
 
-    async atualizarProduto(nome: string, novosDados: Partial<ProdutoEntity>){
+    async atualizarPrecoProduto(nome: string, novosDados: Partial<ProdutoEntity>){
         const produtoAtualizado = await this.buscarPorProduto(nome);
 
         Object.entries(novosDados).forEach(([chave, valor]) => {
+            if(chave === 'nome' || chave === 'categoria')
+                return;
+
             produtoAtualizado[chave] = valor;
 
         });
 
         return produtoAtualizado;
+    }
+
+    async deletar(nome: string){
+        const produto = await this.buscarPorProduto(nome);
+        this.produtos = this.produtos.filter(
+            produto => produto.nome !== nome
+        )
     }
 }

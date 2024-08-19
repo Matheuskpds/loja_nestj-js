@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { CadastrarProdutoDTO } from "./dto/CadastrarProduto.dto";
 import { ProdutoRepository } from "./produto.repository";
 import { ProdutoEntity } from "./produto.entity";
@@ -31,13 +31,23 @@ export class ProdutoController{
     }
 
     @Put('/:nome')
-    async atualizaProduto(@Param('nome') nome: string, @Body() novosDados: AtualizaProdutoDTO){
-        const produtoAtualizado = await this.produtoRepository.atualizarProduto(nome, novosDados);
+    async atualizarPrecoProduto(@Param('nome') nome: string, @Body() novosDados: AtualizaProdutoDTO){
+        const produtoAtualizado = await this.produtoRepository.atualizarPrecoProduto(nome, novosDados);
         console.log(produtoAtualizado);
 
         return{
             produto: produtoAtualizado,
             message: "Produto atualizado com sucesso!"
+        }
+    }
+
+    @Delete('/:nome')
+    async deletarProduto(@Param('nome') nome: string){
+        const removeProduto = await this.produtoRepository.deletar(nome);
+
+        return{
+            produto: removeProduto,
+            message: "Produto removido com sucesso!"
         }
     }
 }
